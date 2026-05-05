@@ -2,6 +2,8 @@ import os
 import json
 import time
 import redis
+import sys
+sys.stdout.reconfigure(line_buffering=True)
 
 # Load environment variables
 agent_id = os.getenv("AGENT_ID")

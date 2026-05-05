@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  hello_agent:
+    build: ./agents/hello_agent
+    ports:
+      - "8001:8001"

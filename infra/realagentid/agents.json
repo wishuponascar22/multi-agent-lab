@@ -1,0 +1,11 @@
+{
+  "agents": {
+    "agent-recon": {},
+    "agent-analysis": {},
+    "agent-categorization": {},
+    "agent-learning": {},
+    "agent-report": {},
+    "agent-guardrail": {},
+    "orchestrator": {}
+  }
+}
