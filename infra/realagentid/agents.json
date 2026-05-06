@@ -1,11 +1,30 @@
 {
-  "agents": {
-    "agent-recon": {},
-    "agent-analysis": {},
-    "agent-categorization": {},
-    "agent-learning": {},
-    "agent-report": {},
-    "agent-guardrail": {},
-    "orchestrator": {}
+  "agent-recon": {
+    "permissions": ["scan", "enumerate", "fingerprint"],
+    "denied": ["exploit", "modify", "delete"]
+  },
+  "agent-analysis": {
+    "permissions": ["analyze", "classify", "report"],
+    "denied": ["exploit", "modify", "delete"]
+  },
+  "agent-categorization": {
+    "permissions": ["categorize", "tag", "prioritize"],
+    "denied": ["exploit", "modify", "delete"]
+  },
+  "agent-learning": {
+    "permissions": ["read", "train", "update_model"],
+    "denied": ["exploit", "delete"]
+  },
+  "agent-report": {
+    "permissions": ["report", "summarize", "export"],
+    "denied": ["exploit", "modify", "delete"]
+  },
+  "agent-guardrail": {
+    "permissions": ["monitor", "block", "alert", "enforce"],
+    "denied": ["exploit", "delete"]
+  },
+  "orchestrator": {
+    "permissions": ["register", "assign", "monitor", "coordinate"],
+    "denied": ["exploit", "delete"]
   }
 }

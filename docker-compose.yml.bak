@@ -1,141 +1,113 @@
 version: "3.9"
 
-networks:
-  agent-net:
-    driver: bridge
-
 services:
-  redis:
-    image: redis:7-alpine
-    container_name: redis
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-    networks:
-      - agent-net
+  # redis:
+  # image: redis:7-alpine
+  # container_name: redis
+  # restart: unless-stopped
+  # ports:
+  #   - "6379:6379"
 
   orchestrator:
     build: ./orchestrator
     container_name: orchestrator
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: host.docker.internal
       REALAGENTID_CONFIG: /opt/realagentid/agents.json
     volumes:
       - ./infra/realagentid/agents.json:/opt/realagentid/agents.json:ro
-    depends_on:
-      redis:
-        condition: service_healthy
-    networks:
-      - agent-net
+    # depends_on:
+    #  - redis
 
   agent-recon:
     build: ./agents/recon
     container_name: agent-recon
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: host.docker.internal
       AGENT_ID: agent-recon
       REALAGENTID_CONFIG: /opt/realagentid/agents.json
     volumes:
       - ./infra/realagentid/agents.json:/opt/realagentid/agents.json:ro
     depends_on:
-      redis:
-        condition: service_healthy
-      orchestrator:
-        condition: service_started
-    networks:
-      - agent-net
+      - orchestrator
 
   agent-categorization:
     build: ./agents/categorization
     container_name: agent-categorization
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: host.docker.internal
       AGENT_ID: agent-categorization
       REALAGENTID_CONFIG: /opt/realagentid/agents.json
     volumes:
       - ./infra/realagentid/agents.json:/opt/realagentid/agents.json:ro
     depends_on:
-      redis:
-        condition: service_healthy
-      orchestrator:
-        condition: service_started
-    networks:
-      - agent-net
+      - orchestrator
 
   agent-analysis:
     build: ./agents/analysis
     container_name: agent-analysis
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: host.docker.internal
       AGENT_ID: agent-analysis
       REALAGENTID_CONFIG: /opt/realagentid/agents.json
     volumes:
       - ./infra/realagentid/agents.json:/opt/realagentid/agents.json:ro
     depends_on:
-      redis:
-        condition: service_healthy
-      orchestrator:
-        condition: service_started
-    networks:
-      - agent-net
+      - orchestrator
 
   agent-report:
     build: ./agents/report
     container_name: agent-report
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: host.docker.internal
       AGENT_ID: agent-report
       REALAGENTID_CONFIG: /opt/realagentid/agents.json
     volumes:
       - ./infra/realagentid/agents.json:/opt/realagentid/agents.json:ro
     depends_on:
-      redis:
-        condition: service_healthy
-      orchestrator:
-        condition: service_started
-    networks:
-      - agent-net
+      - orchestrator
 
   agent-guardrail:
     build: ./agents/guardrail
     container_name: agent-guardrail
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: host.docker.internal
       AGENT_ID: agent-guardrail
       REALAGENTID_CONFIG: /opt/realagentid/agents.json
     volumes:
       - ./infra/realagentid/agents.json:/opt/realagentid/agents.json:ro
     depends_on:
-      redis:
-        condition: service_healthy
-      orchestrator:
-        condition: service_started
-    networks:
-      - agent-net
+      - orchestrator
 
   agent-learning:
     build: ./agents/learning
     container_name: agent-learning
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      REDIS_HOST: redis
+      REDIS_HOST: host.docker.internal
       AGENT_ID: agent-learning
       REALAGENTID_CONFIG: /opt/realagentid/agents.json
     volumes:
       - ./infra/realagentid/agents.json:/opt/realagentid/agents.json:ro
     depends_on:
-      redis:
-        condition: service_healthy
-      orchestrator:
-        condition: service_started
-    networks:
-      - agent-net
+      - orchestrator
